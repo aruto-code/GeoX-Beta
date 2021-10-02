@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <title>Document</title>
+</head>
+
+<body>
+
+  <a href="/admin/01AHome.php">Go Home</a>
+
+  <iframe id="mapPlot" width="100%" height="650" src="" frameborder="0"></iframe>
+
+  <br /><br /><br />
+
+  <table>
+    <tr>
+      <td>IP</td>
+      <td id="ip_inp"></td>
+    </tr>
+    <!-- <tr>
+      <td>Address</td>
+      <td id="org_inp"></td>
+    </tr> -->
+    <!-- <tr>
+      <td>City</td>
+      <td id="city_inp"></td>
+    </tr>
+    <tr>
+      <td>State</td>
+      <td id="state_inp"></td>
+    </tr>
+    <tr>
+      <td>Country</td>
+      <td id="country_inp"></td>
+    </tr> -->
+  </table>
+
+
+
+
+
+  <script>
+
+    var long = 0;
+    var lat = 0;
+    var ip = 0;
+    var addrData = {};
+
+
+    function getLocation() {
+
+
+      $.get("https://api.ipify.org?format=json", function (d, s) {
+
+        $.get("http://api.ipstack.com/" + d.ip + "?access_key=8c58c9c847a16af10e33a5276d0187d4", function (data, status) {
+          console.log(data)
+
+          var geoUrl = "https://maps.google.com/maps?q=" + data.latitude + "," + data.longitude + "&output=embed";
+          document.getElementById("mapPlot").setAttribute("src", geoUrl);
+
+          $("#city_inp").text(data.city);
+          $("#ip_inp").text(data.ip);
+          $("#org_inp").text(data.org);
+          $("#state_inp").text(data.region_name);
+          $("#country_inp").text(data.country_name);
+          $("#addr_inp").text(data.org);
+          // $.get("http://127.0.0.1/admin/set_loc.php?longitude="+data.longitude+"&latitude="+data.latitude, function (data, status) {
+          //   console.log(status)
+          // })
+
+        });
+      });
+    }
+
+    getLocation();
+  </script>
+
+
+
+</body>
+
+</html>
